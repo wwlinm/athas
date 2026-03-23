@@ -31,26 +31,28 @@ fn get_system_theme_sync() -> String {
       if let Ok(output) = Command::new("gsettings")
          .args(["get", "org.gnome.desktop.interface", "color-scheme"])
          .output()
-         && output.status.success() {
-            let stdout = String::from_utf8_lossy(&output.stdout);
-            let theme = stdout.trim().replace(['\'', '\"'], "");
-            match theme.as_str() {
-               "prefer-dark" => return "dark".to_string(),
-               "prefer-light" => return "light".to_string(),
-               _ => {} // Continue to fallback
-            }
+         && output.status.success()
+      {
+         let stdout = String::from_utf8_lossy(&output.stdout);
+         let theme = stdout.trim().replace(['\'', '\"'], "");
+         match theme.as_str() {
+            "prefer-dark" => return "dark".to_string(),
+            "prefer-light" => return "light".to_string(),
+            _ => {} // Continue to fallback
          }
+      }
 
       // Fallback to gtk-theme
       if let Ok(output) = Command::new("gsettings")
          .args(["get", "org.gnome.desktop.interface", "gtk-theme"])
          .output()
-         && output.status.success() {
-            let stdout = String::from_utf8_lossy(&output.stdout).to_lowercase();
-            if stdout.contains("dark") || stdout.contains("adwaita-dark") {
-               return "dark".to_string();
-            }
+         && output.status.success()
+      {
+         let stdout = String::from_utf8_lossy(&output.stdout).to_lowercase();
+         if stdout.contains("dark") || stdout.contains("adwaita-dark") {
+            return "dark".to_string();
          }
+      }
 
       // Check for KDE Plasma theme
       if let Ok(output) = Command::new("kreadconfig5")
@@ -63,12 +65,13 @@ fn get_system_theme_sync() -> String {
             "ColorScheme",
          ])
          .output()
-         && output.status.success() {
-            let stdout = String::from_utf8_lossy(&output.stdout).to_lowercase();
-            if stdout.contains("dark") || stdout.contains("breeze dark") {
-               return "dark".to_string();
-            }
+         && output.status.success()
+      {
+         let stdout = String::from_utf8_lossy(&output.stdout).to_lowercase();
+         if stdout.contains("dark") || stdout.contains("breeze dark") {
+            return "dark".to_string();
          }
+      }
 
       // Default fallback - assume light theme
       "light".to_string()

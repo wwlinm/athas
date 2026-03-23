@@ -508,13 +508,13 @@ pub fn git_diff_file_with_content(
       } else if !content.is_empty() {
          // New file
          for (line_num, line) in content.lines().enumerate() {
-    lines.push(GitDiffLine {
-        line_type: DiffLineType::Added,
-        content: line.to_string(),
-        old_line_number: None,
-        new_line_number: Some((line_num + 1) as u32),
-    });
-}
+            lines.push(GitDiffLine {
+               line_type: DiffLineType::Added,
+               content: line.to_string(),
+               old_line_number: None,
+               new_line_number: Some((line_num + 1) as u32),
+            });
+         }
       }
    }
 
